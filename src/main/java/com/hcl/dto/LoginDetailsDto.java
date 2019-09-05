@@ -13,5 +13,6 @@ public class LoginDetailsDto implements Serializable{
 	
 	private Integer statusCode;
 	private String message;
+	private String name;
 
 }

@@ -2,6 +2,8 @@ package com.hcl.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,14 +45,23 @@ public class LoginsServiceImplTest {
 	
 	@Test
 	public void loginSuccessTest() {
-		Mockito.when(customerRepository.save(customer)).thenReturn(customer);
+		Mockito.when(customerRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(customer));
 		LoginDetailsDto responseEntity = loginsService.login(loginDto);
 		assertEquals(loginDetailsDto.getStatusCode(), responseEntity.getStatusCode());
 	}
 	
 	@Test(expected = IngBankException.class)
 	public void loginFailureTest() {
-		Mockito.when(customerRepository.save(customer)).thenReturn(customer);
+		loginDto = new LoginDto();
+		loginDto.setCustomerId(1);
+		
+		loginDetailsDto = new LoginDetailsDto();
+		loginDetailsDto.setStatusCode(200);
+		
+		customer = new Customer();
+		customer.setCustomerId(1);
+		
+		Mockito.when(customerRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(customer));
 		loginsService.login(loginDto);
 	}
 	

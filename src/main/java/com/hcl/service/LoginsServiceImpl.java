@@ -36,6 +36,7 @@ public class LoginsServiceImpl implements LoginService {
 		} else {
 			loginDetailsDto = new LoginDetailsDto();
 			loginDetailsDto.setStatusCode(200);
+			loginDetailsDto.setName(customer.get().getName());
 			loginDetailsDto.setMessage(IngConstants.LOGIN_SUCCESS);
 			return loginDetailsDto;
 		}
