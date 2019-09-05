@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.hcl.dto.FavouriteAccountDto;
-import com.hcl.dto.RestTempleteDto;
+import com.hcl.entity.Bank;
 import com.hcl.entity.FavouriteAccount;
 import com.hcl.exception.IngBankException;
 import com.hcl.repository.BankRepository;
@@ -65,31 +63,29 @@ public class FavouriteAccountServiceImpl implements FavouriteAccountService {
 			throw new IngBankException("No Favourite Accounts added");
 		} else {
 
-			favouriteAccountList.stream().forEach(favouriteAccount -> {
+			favouriteAccountList.stream().forEach(f -> {
+				System.out.println(f.getIbanNumber());
 				FavouriteAccountDto favouriteAccountDto = new FavouriteAccountDto();
 
-				favouriteAccountDto.setIbanNumber(favouriteAccount.getIbanNumber());
-				favouriteAccountDto.setAccountName(favouriteAccount.getAccountName());
-				favouriteAccountDto.setFavouriteAccountId(favouriteAccount.getFavouriteAccountId());
+				favouriteAccountDto.setIbanNumber(f.getIbanNumber());
+				favouriteAccountDto.setAccountName(f.getAccountName());
+				favouriteAccountDto.setFavouriteAccountId(f.getFavouriteAccountId());
 
-				String ibanNo = favouriteAccount.getIbanNumber();
+				String ibanNo = f.getIbanNumber();
+				String ss = ibanNo.substring(4, 8);
+				logger.info("" + ss);
+				Integer bankCode = Integer.parseInt(ss);
+				logger.info("Inside FavouriteAccountServiceImpl bankCode:{}", bankCode);
 
-				RestTemplate restTemplate = new RestTemplate();
-				ResponseEntity<RestTempleteDto> bankName = restTemplate
-						.getForEntity("http://10.117.189.104:9094/ingbank/bank/" + ibanNo, RestTempleteDto.class);
-				if (bankName.getBody().getStatusCode() != 200) {
-					throw new IngBankException("Bank Name Not Existed");
-				}
-				logger.info("bank name :{}", bankName.getBody().getBankName());
-				String bankNames = bankName.getBody().getBankName();
+				List<Bank> bankList = bankRepository.findByBankCode(bankCode);
 
-				favouriteAccountDto.setBankName(bankNames);
-
-				favouriteAccountDtoList.add(favouriteAccountDto);
-
+				bankList.stream().forEach(b -> {
+					favouriteAccountDto.setBankName(b.getBankName());
+					favouriteAccountDtoList.add(favouriteAccountDto);
+				});
 			});
-
-			return favouriteAccountDtoList;
 		}
+
+		return favouriteAccountDtoList;
 	}
 }
