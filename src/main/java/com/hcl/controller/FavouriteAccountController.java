@@ -18,13 +18,13 @@ import com.hcl.service.FavouriteAccountServiceImpl;
 /**
  * @author Shiva
  * 
- * This class contains logic to get different account details
+ *         This class contains logic to get different account details
  * 
  *
  */
-@CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
+
 @RestController
-@CrossOrigin(origins = {"*","*/"},allowedHeaders = {"*","*/"})
+@CrossOrigin(origins = { "*", "*/" }, allowedHeaders = { "*", "*/" })
 public class FavouriteAccountController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FavouriteAccountController.class);
@@ -37,8 +37,8 @@ public class FavouriteAccountController {
 	 * 
 	 * @return list of FavouriteAccountDto Objects
 	 * 
-	 * This method contains logic to get favourite account list based on
-	 * customerId
+	 *         This method contains logic to get favourite account list based on
+	 *         customerId
 	 * 
 	 *
 	 */
