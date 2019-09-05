@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +63,10 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public ResponseEditDto deleteFavouriteAccount(Integer favouriteAccountId) {
 		Optional<FavouriteAccount> favouriteAccount = favouriteAccountRepository.findById(favouriteAccountId);
+		if(!favouriteAccount.isPresent()) {
+		throw new  IngBankException("no faverate accounts");
+		}
+		
 		FavouriteAccount favouriteAccount2 = new FavouriteAccount();
 		
 		favouriteAccount2.setAccountName(favouriteAccount.get().getAccountName());
