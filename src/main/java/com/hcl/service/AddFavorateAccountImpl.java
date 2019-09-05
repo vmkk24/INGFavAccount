@@ -60,7 +60,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 				"http://13.126.11.147:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
 		if (bankName.getBody().getStatusCode() != 200) {
 			throw new IngBankException("bank Name not Existed");
-		}
+		} 
 		LOGGER.info("bank name :{}", bankName.getBody().getBankName());
 
 		FavouriteAccount favouriteAccount = new FavouriteAccount();
@@ -70,7 +70,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 		favouriteAccount.setStatus("ACTIVE");
 		favouriteAccountRepository.save(favouriteAccount);
 
-		AddAccountOutputDto addAccountOutputDto = new AddAccountOutputDto();
+		AddAccountOutputDto addAccountOutputDto = new AddAccountOutputDto(); 
 		addAccountOutputDto.setMessage("succsessfully added");
 		addAccountOutputDto.setStatusCode(HttpStatus.CREATED.value());
 
