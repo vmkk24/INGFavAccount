@@ -24,6 +24,7 @@ import com.hcl.service.FavouriteAccountServiceImpl;
  */
 @CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
 @RestController
+@CrossOrigin(origins = {"*","*/"},allowedHeaders = {"*","*/"})
 public class FavouriteAccountController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FavouriteAccountController.class);
