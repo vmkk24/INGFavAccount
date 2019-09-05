@@ -27,7 +27,10 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	@Autowired
 	FavouriteAccountRepository favouriteAccountRepository;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
+	@Autowired
+	RestTemplate restTemplate;
+
+	static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
 
 	/**
 	 * add the favorite account service
@@ -45,12 +48,10 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 			throw new IngBankException(" name only ' and - special charecters only allowed");
 
 		if (!ibanValidation(addAccountInputDto.getIbanNumber()))
-			throw new IngBankException("no  special charecters allowed in iban");
+			throw new IngBankException("no  special charecters allowed in iban"); 
 
-		RestTemplate restTemplate = new RestTemplate(); // ES502567894405444421 //ES502567894405444421
-														// //ES502124405444431234 // ES502124405444431234
-		ResponseEntity<RestTempleteDto> bankName = restTemplate
-				.getForEntity("http://10.117.189.104:9094/ingbank/bank/"+addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
+		ResponseEntity<RestTempleteDto> bankName = restTemplate.getForEntity(
+				"http://localhost:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
 		if (bankName.getBody().getStatusCode() != 200) {
 			throw new IngBankException("bank Name not Existed");
 		}

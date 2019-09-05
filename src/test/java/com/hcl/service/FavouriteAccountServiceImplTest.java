@@ -26,7 +26,7 @@ public class FavouriteAccountServiceImplTest {
 	@Mock
 	FavouriteAccountRepository favouriteAccountRepository;
 
-	@Mock
+	@Mock 
 	BankRepository bankRepository;
 
 	@InjectMocks

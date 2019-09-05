@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.client.RestTemplate;
 
 import com.hcl.dto.AddAccountInputDto;
 import com.hcl.dto.AddAccountOutputDto;
@@ -21,6 +23,10 @@ public class AddFavorateAccountImplTest {
 	AddFavorateAccountImpl addFavorateAccountImpl;
 	@Mock
 	FavouriteAccountRepository favouriteAccountRepository;
+	
+	@Mock
+	RestTemplate restTemplate;
+
 
 	FavouriteAccount favouriteAccount;
 	AddAccountInputDto addAccountInputDto;
@@ -38,11 +44,21 @@ public class AddFavorateAccountImplTest {
 	}
 
 	@Test
-	public void testAddAccount() {
-//		Mockito.when(favouriteAccountRepository.save(favouriteAccount)).thenReturn(favouriteAccount);
+	public void testAddAccountPositive() {
+		favouriteAccount.setIbanNumber("ES502124405444431234");
+		Mockito.when(favouriteAccountRepository.save(favouriteAccount)).thenReturn(favouriteAccount);
+		Mockito.when( restTemplate.getForEntity(Mockito.any(),Mockito.any()));
 		AddAccountOutputDto actual = addFavorateAccountImpl.addAccount(addAccountInputDto);
 
 		Assert.assertEquals(201, actual.getStatusCode().intValue());
+	}
+ 
+	@Test(expected = IngBankException.class)
+	public void testAddAccount() {
+//		Mockito.when(favouriteAccountRepository.save(favouriteAccount)).thenReturn(favouriteAccount);
+		Mockito.when( restTemplate.getForEntity(Mockito.any(),Mockito.any()));
+		addFavorateAccountImpl.addAccount(addAccountInputDto);
+ 
 	}
 
 	@Test(expected = IngBankException.class)
