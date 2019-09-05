@@ -27,7 +27,10 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	@Autowired
 	FavouriteAccountRepository favouriteAccountRepository;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
+	@Autowired
+	RestTemplate restTemplate;
+
+	static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
 
 	/**
 	 * 
@@ -47,30 +50,33 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 
 		if (!ibanValidation(addAccountInputDto.getIbanNumber()))
 			throw new IngBankException("no  special charecters allowed in iban");
-RestTemplate restTemplate = new RestTemplate(); // ES502567894405444421 //ES502567894405444421
-														// //ES502124405444431234 // ES502124405444431234
+
+		if (addAccountInputDto.getIbanNumber().length()!=20)
+			throw new IngBankException("iban number lenth is 20");
+		
+		
+
 		ResponseEntity<RestTempleteDto> bankName = restTemplate.getForEntity(
-				"http://10.117.189.104:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
+				"http://localhost:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
 		if (bankName.getBody().getStatusCode() != 200) {
 			throw new IngBankException("bank Name not Existed");
-		}
+		} 
 		LOGGER.info("bank name :{}", bankName.getBody().getBankName());
-		
 
 		FavouriteAccount favouriteAccount = new FavouriteAccount();
 		favouriteAccount.setAccountName(addAccountInputDto.getAccountName());
 		favouriteAccount.setIbanNumber(addAccountInputDto.getIbanNumber());
 		favouriteAccount.setCustomerId(addAccountInputDto.getCustomerId());
 		favouriteAccount.setStatus("ACTIVE");
-		favouriteAccountRepository.save(favouriteAccount);
-
-		AddAccountOutputDto addAccountOutputDto = new AddAccountOutputDto();
+		favouriteAccountRepository.save(favouriteAccount); 
+		
+		AddAccountOutputDto addAccountOutputDto = new AddAccountOutputDto(); 
 		addAccountOutputDto.setMessage("succsessfully added");
 		addAccountOutputDto.setStatusCode(HttpStatus.CREATED.value());
 
 		return addAccountOutputDto;
 
-	}
+	} 
 
 	@Override
 	public boolean nameValidation(String name) {
@@ -99,6 +105,9 @@ RestTemplate restTemplate = new RestTemplate(); // ES502567894405444421 //ES5025
 
 	@Override
 	public boolean ibanValidation(String iban) {
+		
+		LOGGER.info("AddFavorateAccountImpl -->ibanValidation()");
+
 
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]*");
 
