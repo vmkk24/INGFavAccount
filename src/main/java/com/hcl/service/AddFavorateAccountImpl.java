@@ -68,8 +68,8 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 		favouriteAccount.setIbanNumber(addAccountInputDto.getIbanNumber());
 		favouriteAccount.setCustomerId(addAccountInputDto.getCustomerId());
 		favouriteAccount.setStatus("ACTIVE");
-		favouriteAccountRepository.save(favouriteAccount);
-
+		favouriteAccountRepository.save(favouriteAccount); 
+		
 		AddAccountOutputDto addAccountOutputDto = new AddAccountOutputDto(); 
 		addAccountOutputDto.setMessage("succsessfully added");
 		addAccountOutputDto.setStatusCode(HttpStatus.CREATED.value());
@@ -105,6 +105,9 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 
 	@Override
 	public boolean ibanValidation(String iban) {
+		
+		LOGGER.info("AddFavorateAccountImpl -->ibanValidation()");
+
 
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]*");
 

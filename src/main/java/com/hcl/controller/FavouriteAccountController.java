@@ -22,7 +22,7 @@ import com.hcl.service.FavouriteAccountService;
  * 
  *
  */
-
+ 
 @RestController
 @CrossOrigin(origins = { "*", "*/" }, allowedHeaders = { "*", "*/" })
 public class FavouriteAccountController {

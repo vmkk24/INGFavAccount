@@ -12,14 +12,27 @@ import com.hcl.dto.AddAccountInputDto;
 import com.hcl.dto.AddAccountOutputDto;
 import com.hcl.service.AddFavorateAccount;
 
+/**
+ * @author sairam
+ * 
+ *         This class contains add the favorate account
+ * 
+ *
+ */
 @CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
-@RestController
+@RestController 
 public class AddFavoorateAccountController {
 
 	@Autowired
 	AddFavorateAccount addFavorateAccount;
 
 	
+	/**
+	 * @param AddAccountInputDto contains favorite
+	 *         This class contains add the favorite ibanNumber , accountName, customerId
+	 * 
+	 *
+	 */
 	@PostMapping("/favouriteAccounts")
 	public ResponseEntity<AddAccountOutputDto> addAccount(@RequestBody AddAccountInputDto addAccountInputDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(addFavorateAccount.addAccount(addAccountInputDto));
