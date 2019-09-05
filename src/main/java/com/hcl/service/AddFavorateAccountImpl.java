@@ -29,7 +29,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 
 	/**
 	 *  add the favorite account service
-	 *  @param addAccountInputDto josn will contains 
+	 *  @param addAccountInputDto json will contains 
 	 *  
 	 **/ 
 	
