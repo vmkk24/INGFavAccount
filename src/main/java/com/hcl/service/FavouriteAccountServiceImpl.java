@@ -73,7 +73,7 @@ public class FavouriteAccountServiceImpl implements FavouriteAccountService {
 
 				String ibanNo = f.getIbanNumber();
 				String ss = ibanNo.substring(4, 8);
-				logger.info("" + ss);
+				
 				Integer bankCode = Integer.parseInt(ss);
 				logger.info("Inside FavouriteAccountServiceImpl bankCode:{}", bankCode);
 

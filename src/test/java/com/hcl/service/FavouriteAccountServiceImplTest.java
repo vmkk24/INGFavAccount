@@ -30,7 +30,7 @@ public class FavouriteAccountServiceImplTest {
 	BankRepository bankRepository;
 
 	@InjectMocks
-	FavouriteAccountService favouriteAccountService;
+	FavouriteAccountServiceImpl favouriteAccountService;
 
 	@Test
 	public void testGetAccountsList() {
@@ -44,14 +44,14 @@ public class FavouriteAccountServiceImplTest {
 		favouriteAccountDto.setAccountName("shiva");
 		favouriteAccountDto.setBankName("Denver Bank");
 		favouriteAccountDto.setFavouriteAccountId(1);
-		favouriteAccountDto.setIbanNumber("ES50 2123 4954 4443 2332");
+		favouriteAccountDto.setIbanNumber("ES502123495444432332");
 		favouriteAccountDtoList.add(favouriteAccountDto);
 
 		FavouriteAccountDto favouriteAccountDto2 = new FavouriteAccountDto();
 		favouriteAccountDto2.setAccountName("kumar");
 		favouriteAccountDto2.setBankName("Moscow Bank");
 		favouriteAccountDto2.setFavouriteAccountId(1);
-		favouriteAccountDto2.setIbanNumber("ES50 2124 4954 4443 2332");
+		favouriteAccountDto2.setIbanNumber("ES502124495444432332");
 		favouriteAccountDtoList.add(favouriteAccountDto2);
 
 		Bank bank = new Bank();
@@ -70,7 +70,7 @@ public class FavouriteAccountServiceImplTest {
 		favouriteAccount.setAccountName("shiva");
 		favouriteAccount.setCustomerId(1);
 		favouriteAccount.setFavouriteAccountId(1);
-		favouriteAccount.setIbanNumber("ES50 2124 4954 4443 2332");
+		favouriteAccount.setIbanNumber("ES502124495444432332");
 		favouriteAccount.setStatus("ACTIVE");
 		favouriteAccountList.add(favouriteAccount);
 
