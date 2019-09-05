@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcl.dto.FavouriteAccountDto;
-import com.hcl.service.FavouriteAccountServiceImpl;
+import com.hcl.service.FavouriteAccountService;
 
 /**
  * @author Shiva
@@ -30,7 +30,7 @@ public class FavouriteAccountController {
 	private static final Logger logger = LoggerFactory.getLogger(FavouriteAccountController.class);
 
 	@Autowired
-	FavouriteAccountServiceImpl favouriteAccountServiceImpl;
+	FavouriteAccountService favouriteAccountService;
 
 	/**
 	 * @param customerId
@@ -45,9 +45,9 @@ public class FavouriteAccountController {
 	@GetMapping("/favouriteAccounts/{customerId}")
 	public ResponseEntity<List<FavouriteAccountDto>> getFavouriteAccountList(@PathVariable Integer customerId) {
 
-		logger.info("Inside FavouriteAccountServiceImpl customerId:{}", customerId);
+		logger.info("Inside FavouriteAccountController customerId:{}", customerId);
 
-		return new ResponseEntity<>(favouriteAccountServiceImpl.getAccountsList(customerId), HttpStatus.OK);
+		return new ResponseEntity<>(favouriteAccountService.getAccountsList(customerId), HttpStatus.OK);
 	}
 
 }

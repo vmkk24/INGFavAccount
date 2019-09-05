@@ -30,7 +30,7 @@ public class FavouriteAccountServiceImplTest {
 	BankRepository bankRepository;
 
 	@InjectMocks
-	FavouriteAccountServiceImpl favouriteAccountServiceImpl;
+	FavouriteAccountService favouriteAccountService;
 
 	@Test
 	public void testGetAccountsList() {
@@ -82,12 +82,12 @@ public class FavouriteAccountServiceImplTest {
 
 		Mockito.when(bankRepository.findByBankCode(Mockito.anyInt())).thenReturn(bankList);
 
-		List<FavouriteAccountDto> actualValue = favouriteAccountServiceImpl.getAccountsList(customer.getCustomerId());
+		List<FavouriteAccountDto> actualValue = favouriteAccountService.getAccountsList(customer.getCustomerId());
 
 		assertEquals(favouriteAccountDtoList.size(), actualValue.size());
 	}
-	
-	@Test(expected=IngBankException.class)
+
+	@Test(expected = IngBankException.class)
 	public void testGetAccountsListElse() {
 
 		List<FavouriteAccount> favouriteAccountList = new ArrayList<>();
@@ -131,13 +131,11 @@ public class FavouriteAccountServiceImplTest {
 
 		Customer customer = new Customer();
 		customer.setCustomerId(1);
-	
 
-		//Mockito.when(bankRepository.findByBankCode(Mockito.anyInt())).thenReturn(bankList);
+		// Mockito.when(bankRepository.findByBankCode(Mockito.anyInt())).thenReturn(bankList);
 
-		 favouriteAccountServiceImpl.getAccountsList(customer.getCustomerId());
+		favouriteAccountService.getAccountsList(customer.getCustomerId());
 
-		
 	}
 
 }
