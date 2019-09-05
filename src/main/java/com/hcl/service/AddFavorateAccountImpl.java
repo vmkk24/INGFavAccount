@@ -57,7 +57,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 		
 
 		ResponseEntity<RestTempleteDto> bankName = restTemplate.getForEntity(
-				"http://loacalhost:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
+				"http://localhost:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
 		if (bankName.getBody().getStatusCode() != 200) {
 			throw new IngBankException("bank Name not Existed");
 		} 
