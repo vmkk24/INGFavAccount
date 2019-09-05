@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.hcl.dto.AddAccountInputDto;
 import com.hcl.dto.AddAccountOutputDto;
@@ -48,7 +46,6 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 
 //		RestTemplate restTemplate=new RestTemplate(); //ES502567894405444421 //ES502567894405444421
 //		ResponseEntity<String> bankName = restTemplate.getForEntity("http://10.117.189.104:9094/ingbank/bank/234567867894405444421", String.class);
-		
 //		LOGGER.info("bank name :{}",bankName);		
 		
 		FavouriteAccount favouriteAccount = new FavouriteAccount();
