@@ -7,17 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.hcl.dto.AddAccountInputDto;
 import com.hcl.dto.AddAccountOutputDto;
+import com.hcl.dto.RestTempleteDto;
 import com.hcl.entity.FavouriteAccount;
 import com.hcl.exception.IngBankException;
 import com.hcl.repository.FavouriteAccountRepository;
 
 /**
- * @author sairam
- *  add the favorite account service
+ * @author sairam add the favorite account service
  **/
 @Service
 public class AddFavorateAccountImpl implements AddFavorateAccount {
@@ -28,11 +30,12 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
 
 	/**
-	 *  add the favorite account service
-	 *  @param addAccountInputDto josn will contains 
-	 *  
-	 **/ 
-	
+	 * add the favorite account service
+	 * 
+	 * @param addAccountInputDto josn will contains
+	 * 
+	 **/
+
 	@Override
 	public AddAccountOutputDto addAccount(AddAccountInputDto addAccountInputDto) {
 
@@ -44,10 +47,15 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 		if (!ibanValidation(addAccountInputDto.getIbanNumber()))
 			throw new IngBankException("no  special charecters allowed in iban");
 
-//		RestTemplate restTemplate=new RestTemplate(); //ES502567894405444421 //ES502567894405444421
-//		ResponseEntity<String> bankName = restTemplate.getForEntity("http://10.117.189.104:9094/ingbank/bank/234567867894405444421", String.class);
-//		LOGGER.info("bank name :{}",bankName);		
-		
+		RestTemplate restTemplate = new RestTemplate(); // ES502567894405444421 //ES502567894405444421
+														// //ES502124405444431234 // ES502124405444431234
+		ResponseEntity<RestTempleteDto> bankName = restTemplate
+				.getForEntity("http://10.117.189.104:9094/ingbank/bank/"+addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
+		if (bankName.getBody().getStatusCode() != 200) {
+			throw new IngBankException("bank Name not Existed");
+		}
+		LOGGER.info("bank name :{}", bankName.getBody().getBankName());
+
 		FavouriteAccount favouriteAccount = new FavouriteAccount();
 		favouriteAccount.setAccountName(addAccountInputDto.getAccountName());
 		favouriteAccount.setIbanNumber(addAccountInputDto.getIbanNumber());
@@ -64,7 +72,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	}
 
 	@Override
-	public  boolean nameValidation(String name) {
+	public boolean nameValidation(String name) {
 
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]*");
 
@@ -89,7 +97,7 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	}
 
 	@Override
-	public  boolean ibanValidation(String iban) {
+	public boolean ibanValidation(String iban) {
 
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]*");
 
