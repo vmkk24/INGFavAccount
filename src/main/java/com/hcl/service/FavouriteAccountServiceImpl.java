@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.hcl.dto.FavouriteAccountDto;
-import com.hcl.entity.Bank;
+import com.hcl.dto.RestTempleteDto;
 import com.hcl.entity.FavouriteAccount;
 import com.hcl.exception.IngBankException;
 import com.hcl.repository.BankRepository;
@@ -36,6 +38,9 @@ public class FavouriteAccountServiceImpl implements FavouriteAccountService {
 	@Autowired
 	BankRepository bankRepository;
 
+	@Autowired
+	RestTemplate restTemplate;
+
 	/**
 	 * @param customerId
 	 * 
@@ -51,41 +56,42 @@ public class FavouriteAccountServiceImpl implements FavouriteAccountService {
 	public List<FavouriteAccountDto> getAccountsList(Integer customerId) {
 		logger.info("Inside FavouriteAccountServiceImpl customerId:{}", customerId);
 
-		FavouriteAccountDto favouriteAccountDto = null;
 		String status = "ACTIVE";
 
 		List<FavouriteAccountDto> favouriteAccountDtoList = new ArrayList<>();
 
-		Pageable pageable = PageRequest.of(0, 3);
+		Pageable pageable = PageRequest.of(0, 5);
 		List<FavouriteAccount> favouriteAccountList = favouriteAccountRepository.findByCustomerIdAndStatus(customerId,
 				status, pageable);
 
 		if (favouriteAccountList.isEmpty()) {
 			throw new IngBankException("No Favourite Accounts added");
 		} else {
-			for (FavouriteAccount favouriteAccount : favouriteAccountList) {
 
-				favouriteAccountDto = new FavouriteAccountDto();
+			favouriteAccountList.stream().forEach(favouriteAccount -> {
+				FavouriteAccountDto favouriteAccountDto = new FavouriteAccountDto();
 
 				favouriteAccountDto.setIbanNumber(favouriteAccount.getIbanNumber());
 				favouriteAccountDto.setAccountName(favouriteAccount.getAccountName());
 				favouriteAccountDto.setFavouriteAccountId(favouriteAccount.getFavouriteAccountId());
 
 				String ibanNo = favouriteAccount.getIbanNumber();
-				String ibanList[] = ibanNo.split(" ");
-				String ibanNumber = ibanList[1];
-				Integer bankCode = Integer.parseInt(ibanNumber);
-				List<Bank> bankList = bankRepository.findByBankCode(bankCode);
-				for (Bank bank : bankList) {
-					favouriteAccountDto.setBankName(bank.getBankName());
-					favouriteAccountDtoList.add(favouriteAccountDto);
-				}
 
-			}
+				ResponseEntity<RestTempleteDto> bankName = restTemplate
+						.getForEntity("http://10.117.189.104:9094/ingbank/bank/" + ibanNo, RestTempleteDto.class);
+				if (bankName.getBody().getStatusCode() != 200) {
+					throw new IngBankException("Bank Name Not Existed");
+				}
+				logger.info("bank name :{}", bankName.getBody().getBankName());
+				String bankNames = bankName.getBody().getBankName();
+
+				favouriteAccountDto.setBankName(bankNames);
+
+				favouriteAccountDtoList.add(favouriteAccountDto);
+
+			});
 
 			return favouriteAccountDtoList;
-
 		}
 	}
-
 }

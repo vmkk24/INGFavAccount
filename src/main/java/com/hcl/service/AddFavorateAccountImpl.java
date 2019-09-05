@@ -33,9 +33,10 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 	static final Logger LOGGER = LoggerFactory.getLogger(AddFavorateAccountImpl.class);
 
 	/**
+	 * 
 	 * add the favorite account service
 	 * 
-	 * @param addAccountInputDto josn will contains
+	 * @param addAccountInputDto json will contains
 	 * 
 	 **/
 
@@ -48,10 +49,15 @@ public class AddFavorateAccountImpl implements AddFavorateAccount {
 			throw new IngBankException(" name only ' and - special charecters only allowed");
 
 		if (!ibanValidation(addAccountInputDto.getIbanNumber()))
-			throw new IngBankException("no  special charecters allowed in iban"); 
+			throw new IngBankException("no  special charecters allowed in iban");
+
+		if (addAccountInputDto.getIbanNumber().length()!=20)
+			throw new IngBankException("iban number lenth is 20");
+		
+		
 
 		ResponseEntity<RestTempleteDto> bankName = restTemplate.getForEntity(
-				"http://localhost:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
+				"http://13.126.11.147:9094/ingbank/bank/" + addAccountInputDto.getIbanNumber(), RestTempleteDto.class);
 		if (bankName.getBody().getStatusCode() != 200) {
 			throw new IngBankException("bank Name not Existed");
 		}
