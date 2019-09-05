@@ -1,12 +1,14 @@
 package com.hcl.repository;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.hcl.entity.FavouriteAccount;
 
-@Repository
-public interface FavouriteAccountRepository  extends JpaRepository<FavouriteAccount, Integer>{
+public interface FavouriteAccountRepository extends JpaRepository<FavouriteAccount, Integer> {
 
+	public List<FavouriteAccount> findByCustomerIdAndStatus(Integer customerId, String status, Pageable pageable);
 
 }
