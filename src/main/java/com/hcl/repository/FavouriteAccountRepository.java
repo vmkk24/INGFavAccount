@@ -9,6 +9,6 @@ import com.hcl.entity.FavouriteAccount;
 
 public interface FavouriteAccountRepository extends JpaRepository<FavouriteAccount, Integer> {
 
-	public List<FavouriteAccount> findByCustomerIdAndStatus(Integer customerId, String status,Pageable pageable);
+	public List<FavouriteAccount> findByCustomerIdAndStatus(Integer customerId, String status, Pageable pageable);
 
 }
