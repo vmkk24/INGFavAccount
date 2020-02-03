@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>sonar-maven-plugin</artifactId>
-			<version>3.6.0.1398</version>
+			<version>3.7.0</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
@@ -85,8 +85,8 @@
 	
 	<distributionManagement>
   <snapshotRepository>
-    <id>Veer_FavAccount</id>
-    <url>http://52.66.244.63:8081/nexus/content/repositories/Veer_FavAccount</url>
+    <id>nexus</id>
+    <url>http://13.233.50.211:8081/nexus/content/repositories/snapshots</url>
   </snapshotRepository>
 </distributionManagement>
 
